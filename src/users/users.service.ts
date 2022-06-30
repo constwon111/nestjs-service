@@ -1,7 +1,12 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  InternalServerErrorException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EmailService } from 'src/email/email.service';
-import { Repository } from 'typeorm';
+import { Connection, Repository } from 'typeorm';
 import * as uuid from 'uuid';
 import { UserEntity } from './entity/user.entity';
 import { UserInfo } from './UserInfo';
@@ -13,6 +18,7 @@ export class UsersService {
     private emailService: EmailService,
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
+    private connection: Connection,
   ) {}
 
   async createUser(name: string, email: string, password: string) {
@@ -25,7 +31,13 @@ export class UsersService {
 
     const signupVerifyToken = uuid.v1();
 
-    await this.saveUser(name, email, password, signupVerifyToken);
+    // await this.saveUser(name, email, password, signupVerifyToken);
+    await this.saveUsersUsingTransaction(
+      name,
+      email,
+      password,
+      signupVerifyToken,
+    );
     await this.sendMemberJoinEmail(email, signupVerifyToken);
   }
 
@@ -50,6 +62,27 @@ export class UsersService {
     await this.usersRepository.save(user);
 
     return;
+  }
+
+  private async saveUsersUsingTransaction(
+    name: string,
+    email: string,
+    password: string,
+    signUpVerifyToken: string,
+  ) {
+    await this.connection.transaction(async (manager) => {
+      const user = new UserEntity();
+      user.id = ulid();
+      user.name = name;
+      user.email = email;
+      user.password = password;
+      user.signUpVerifyToken = signUpVerifyToken;
+
+      await manager.save(user);
+      //   throw new InternalServerErrorException(); // 일부러 에러를 발생시켜 본다
+      //   user.name = 'test11';
+      //   await manager.save(user);
+    });
   }
 
   private async sendMemberJoinEmail(email: string, signupVerifyToken: string) {
