@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import Mail from 'nodemailer/lib/mailer';
 import * as nodemailer from 'nodemailer';
 import { password, email, baseUrl } from 'src/config/config';
@@ -10,7 +10,7 @@ interface EmailOptions {
   subject: string;
   html: string;
 }
-
+HttpStatus
 @Injectable()
 export class EmailService {
   private transporter: Mail;

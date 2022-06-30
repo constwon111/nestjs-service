@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { validationSchema } from './config/validationSchema';
 import emailConfig from './config/emailConfig';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
@@ -17,6 +18,16 @@ import emailConfig from './config/emailConfig';
       validationSchema,
     }),
     EmailModule,
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: process.env.DATABASE_HOST,
+      port: 3307,
+      username: process.env.DATABASE_USERNAME,
+      password: process.env.DATABASE_PASSWORD,
+      database: 'test',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: Boolean(process.env.DATABASE_SYNCHRONIZE),
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
