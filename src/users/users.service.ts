@@ -88,14 +88,14 @@ export class UsersService {
     });
   }
 
-  private async sendMemberJoinEmail(email: string, signupVerifyToken: string) {
+  private async sendMemberJoinEmail(email: string, signUpVerifyToken: string) {
     await this.emailService.sendMemberJoinVerification(
       email,
-      signupVerifyToken,
+      signUpVerifyToken,
     );
   }
-  async verifyEmail(signupVerifyToken: string): Promise<string> {
-    const user = await this.usersRepository.findOne(signupVerifyToken);
+  async verifyEmail(signUpVerifyToken: string): Promise<string> {
+    const user = await this.usersRepository.findOne({ signUpVerifyToken });
 
     if (!user) {
       throw new NotFoundException('유저가 존재하지 않습니다');
