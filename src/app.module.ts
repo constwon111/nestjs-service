@@ -30,6 +30,7 @@ import { AuthModule } from './auth/auth.module';
       synchronize: Boolean(process.env.DATABASE_SYNCHRONIZE),
     }),
     // TypeOrmModule.forRoot(),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
