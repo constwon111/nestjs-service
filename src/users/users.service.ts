@@ -2,6 +2,7 @@ import {
   HttpException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -92,6 +93,11 @@ export class UsersService {
     );
   }
   async verifyEmail(signupVerifyToken: string): Promise<string> {
+    // const user = await this.usersRepository.findOne({signupVerifyToken}).
+    // if(!user){
+    //     throw new NotFoundException('유저가 존재하지 않습니다.')
+    // }
+    // return this.authSer
     throw new Error('Method not implemented');
   }
 
