@@ -10,7 +10,6 @@ interface EmailOptions {
   subject: string;
   html: string;
 }
-HttpStatus
 @Injectable()
 export class EmailService {
   private transporter: Mail;

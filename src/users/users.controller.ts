@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Query } from '@nestjs/common';
 import { Post } from '@nestjs/common';
-
+import { AuthService } from 'src/auth/auth.service';
+import { Headers } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 
 import { UserLoginDto } from './dto/user-login.dto';
@@ -10,7 +11,10 @@ import { UsersService } from './users.service';
 
 @Controller('/users')
 export class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private authService: AuthService,
+  ) {}
 
   @Post()
   async createUser(@Body() dto: CreateUserDto): Promise<void> {
@@ -31,14 +35,20 @@ export class UsersController {
     return;
   }
 
-  @Get('/:id')
-  async getUserInfo(@Param('id') userId: string): Promise<UserInfo> {
-    console.log(userId);
-    return;
-  }
-
   @Get()
   async test() {
     console.log('hihihi');
+  }
+
+  @Get(':id')
+  async getUserInfo(
+    @Headers() headers: any,
+    @Param('id') userId: string,
+  ): Promise<UserInfo> {
+    const jwtString = headers.authorization.split('Bearer ')[1];
+
+    this.authService.verify(jwtString);
+
+    return this.usersService.getUserInfo(userId);
   }
 }
