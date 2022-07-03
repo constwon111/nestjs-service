@@ -49,7 +49,6 @@ import {
       ],
     }),
 
-    // TypeOrmModule.forRoot(),
     AuthModule,
   ],
   controllers: [AppController],
