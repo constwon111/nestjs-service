@@ -8,13 +8,14 @@ import { validationSchema } from './config/validationSchema';
 import emailConfig from './config/emailConfig';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import authConfig from './config/authConfig';
 
 @Module({
   imports: [
     UsersModule,
     ConfigModule.forRoot({
       envFilePath: [`${__dirname}/config/env/.${process.env.NODE_ENV}.env`],
-      load: [emailConfig],
+      load: [emailConfig, authConfig],
       isGlobal: true,
       validationSchema,
     }),

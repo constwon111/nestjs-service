@@ -82,9 +82,6 @@ export class UsersService {
       user.signUpVerifyToken = signUpVerifyToken;
 
       await manager.save(user);
-      //   throw new InternalServerErrorException(); // 일부러 에러를 발생시켜 본다
-      //   user.name = 'test11';
-      //   await manager.save(user);
     });
   }
 

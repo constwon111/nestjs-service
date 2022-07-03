@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Param, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { Post } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { Headers } from '@nestjs/common';
@@ -27,6 +34,7 @@ export class UsersController {
     const { signupVerifyToken } = dto;
     console.log(dto);
     return await this.usersService.verifyEmail(signupVerifyToken);
+    // throw new Error('Method not implemented');
   }
 
   @Post('/login')
