@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpException,
+  Inject,
   Param,
   Query,
 } from '@nestjs/common';
@@ -15,18 +16,33 @@ import { UserLoginDto } from './dto/user-login.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
 import { UserInfo } from './UserInfo';
 import { UsersService } from './users.service';
+import { WinstonLogger, WINSTON_MODULE_PROVIDER } from 'nest-winston';
 
 @Controller('/users')
 export class UsersController {
   constructor(
     private usersService: UsersService,
     private authService: AuthService,
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: WinstonLogger,
   ) {}
 
   @Post()
   async createUser(@Body() dto: CreateUserDto): Promise<void> {
     const { name, email, password } = dto;
+    this.printWinstonLog(dto);
     await this.usersService.createUser(name, email, password);
+  }
+
+  private printWinstonLog(dto) {
+    // console.log(this.logger.name);
+
+    this.logger.error('error: ', dto);
+    this.logger.warn('warn: ', dto);
+    // this.logger.info('info: ', dto);
+    // this.logger.http('http: ', dto);
+    this.logger.verbose('verbose: ', dto);
+    this.logger.debug('debug: ', dto);
+    // this.logger.silly('silly: ', dto);
   }
 
   @Post('/email-verify')
