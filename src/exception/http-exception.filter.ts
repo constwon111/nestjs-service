@@ -28,10 +28,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
       url: req.url,
       response,
       stack,
-      level: 'verbose',
-      message: 'ajs',
     };
-    this.logger.log(log);
+    console.log(log);
 
     res.status((exception as HttpException).getStatus()).json(response);
   }
