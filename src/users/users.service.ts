@@ -46,7 +46,7 @@ export class UsersService {
 
   private async checkUserExists(email: string): Promise<boolean> {
     const user = await this.usersRepository.findOne({ email });
-
+    console.log(user);
     return user !== undefined;
   }
 

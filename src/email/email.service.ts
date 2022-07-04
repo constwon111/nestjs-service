@@ -29,7 +29,7 @@ export class EmailService {
     emailAddress: string,
     signupVerifyToken: string,
   ) {
-    const url = `${this.config.baseUrl}/users/email-verify?signupVerifyToken =${signupVerifyToken}`;
+    const url = `${this.config.baseUrl}/users/email-verify?signupVerifyToken=${signupVerifyToken}`;
     const mailOptions: EmailOptions = {
       to: emailAddress,
       subject: '가입인증 메일',

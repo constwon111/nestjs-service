@@ -8,12 +8,13 @@ import {
   LoggerService,
   Param,
   Query,
+  Res,
 } from '@nestjs/common';
 import { Post } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { Headers } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-
+import { Response } from 'express';
 import { UserLoginDto } from './dto/user-login.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
 import { UserInfo } from './UserInfo';
@@ -48,11 +49,14 @@ export class UsersController {
   }
 
   @Post('/email-verify')
-  async verifyEmail(@Query() dto: VerifyEmailDto): Promise<string> {
+  async verifyEmail(
+    @Query() dto: VerifyEmailDto,
+    @Res() res: Response,
+  ): Promise<void> {
     const { signupVerifyToken } = dto;
-    console.log(dto);
-    return await this.usersService.verifyEmail(signupVerifyToken);
-    // throw new Error('Method not implemented');
+
+    const result = await this.usersService.verifyEmail(signupVerifyToken);
+    res.json({ result });
   }
 
   @Post('/login')
