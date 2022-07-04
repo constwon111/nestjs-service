@@ -5,8 +5,8 @@ import {
   HttpException,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { Logger } from 'winston';
 import { Response } from 'express';
+import { Logger } from '@nestjs/common';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -29,7 +29,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       response,
       stack,
     };
-    console.log(log);
+    this.logger.log(log);
 
     res.status((exception as HttpException).getStatus()).json(response);
   }
