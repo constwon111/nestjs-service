@@ -31,7 +31,7 @@ export class UsersController {
   @Post()
   async createUser(@Body() dto: CreateUserDto): Promise<void> {
     const { name, email, password } = dto;
-    this.printLoggerServiceLog(dto);
+    // this.printLoggerServiceLog(dto);
     await this.usersService.createUser(name, email, password);
   }
 

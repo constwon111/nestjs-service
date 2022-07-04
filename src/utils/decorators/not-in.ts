@@ -16,8 +16,6 @@ export function NotIn(property: string, validationOptions?: ValidationOptions) {
         validate(value: any, args: ValidationArguments) {
           const [relatedPropertyName] = args.constraints;
           const relatedValue = (args.object as any)[relatedPropertyName];
-          console.log(relatedValue);
-          console.log(value);
           let isSuccess =
             typeof value === 'string' &&
             typeof relatedValue === 'string' &&
@@ -27,7 +25,4 @@ export function NotIn(property: string, validationOptions?: ValidationOptions) {
       },
     });
   };
-
 }
-
-
