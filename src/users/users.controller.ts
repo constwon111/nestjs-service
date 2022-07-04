@@ -9,6 +9,7 @@ import {
   Param,
   Query,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { Post } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
@@ -21,6 +22,7 @@ import { UserInfo } from './UserInfo';
 import { UsersService } from './users.service';
 import { WinstonLogger, WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { InternalServerErrorException } from '@nestjs/common';
+import { AuthGuard } from 'src/guard/auth.guard';
 @Controller('/users')
 export class UsersController {
   constructor(
@@ -68,10 +70,11 @@ export class UsersController {
     console.log('hihihi');
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id')
   async getUserInfo(
-    @Headers() headers: any,
     @Param('id') userId: string,
+    @Headers() headers,
   ): Promise<UserInfo> {
     const jwtString = headers.authorization.split('Bearer ')[1];
 
