@@ -22,7 +22,8 @@ import { UserInfo } from './UserInfo';
 import { UsersService } from './users.service';
 import { WinstonLogger, WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { InternalServerErrorException } from '@nestjs/common';
-import { AuthGuard } from 'src/guard/auth.guard';
+// import { AuthGuard } from 'src/guard/auth.guard';
+import { AuthGuard } from '@nestjs/passport';
 @Controller('/users')
 export class UsersController {
   constructor(
@@ -70,15 +71,12 @@ export class UsersController {
     console.log('hihihi');
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard())
   @Get(':id')
-  async getUserInfo(
-    @Param('id') userId: string,
-    @Headers() headers,
-  ): Promise<UserInfo> {
-    const jwtString = headers.authorization.split('Bearer ')[1];
+  async getUserInfo(@Param('id') userId: string): Promise<UserInfo> {
+    // const jwtString = headers.authorization.split('Bearer ')[1];
 
-    this.authService.verify(jwtString);
+    // this.authService.verify(jwtString);
 
     return this.usersService.getUserInfo(userId);
   }
