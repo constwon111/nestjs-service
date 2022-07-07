@@ -6,6 +6,7 @@ import { UserEntity } from './entity/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
+import * as config from 'config'
 
 @Module({
   imports: [

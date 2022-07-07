@@ -35,7 +35,6 @@ export class UsersController {
   @Post()
   async createUser(@Body() dto: CreateUserDto): Promise<void> {
     const { name, email, password } = dto;
-    // this.printLoggerServiceLog(dto);
     await this.usersService.createUser(name, email, password);
   }
 
@@ -57,7 +56,6 @@ export class UsersController {
 
     const result = await this.usersService.verifyEmail(signupVerifyToken);
     return result;
-    // throw new Error('Method not implemented');
   }
 
   @Post('/login')
@@ -74,10 +72,6 @@ export class UsersController {
   @UseGuards(AuthGuard())
   @Get(':id')
   async getUserInfo(@Param('id') userId: string): Promise<UserInfo> {
-    // const jwtString = headers.authorization.split('Bearer ')[1];
-
-    // this.authService.verify(jwtString);
-
     return this.usersService.getUserInfo(userId);
   }
 }
