@@ -22,7 +22,8 @@ import { UserInfo } from './UserInfo';
 import { UsersService } from './users.service';
 import { WinstonLogger, WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { InternalServerErrorException } from '@nestjs/common';
-import { AuthGuard } from 'src/guard/auth.guard';
+// import { AuthGuard } from 'src/guard/auth.guard';
+import { AuthGuard } from '@nestjs/passport';
 @Controller('/users')
 export class UsersController {
   constructor(
@@ -34,7 +35,6 @@ export class UsersController {
   @Post()
   async createUser(@Body() dto: CreateUserDto): Promise<void> {
     const { name, email, password } = dto;
-    // this.printLoggerServiceLog(dto);
     await this.usersService.createUser(name, email, password);
   }
 
@@ -56,7 +56,6 @@ export class UsersController {
 
     const result = await this.usersService.verifyEmail(signupVerifyToken);
     return result;
-    // throw new Error('Method not implemented');
   }
 
   @Post('/login')
@@ -70,16 +69,9 @@ export class UsersController {
     console.log('hihihi');
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard())
   @Get(':id')
-  async getUserInfo(
-    @Param('id') userId: string,
-    @Headers() headers,
-  ): Promise<UserInfo> {
-    const jwtString = headers.authorization.split('Bearer ')[1];
-
-    this.authService.verify(jwtString);
-
+  async getUserInfo(@Param('id') userId: string): Promise<UserInfo> {
     return this.usersService.getUserInfo(userId);
   }
 }
